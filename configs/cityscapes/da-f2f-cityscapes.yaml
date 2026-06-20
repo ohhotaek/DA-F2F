@@ -1,0 +1,38 @@
+_BASE_: "./base-rcnn-cityscapes.yaml"
+MODEL:
+  WEIGHTS: "/mnt/hdddata/hotaek/da2od-best"
+EMA:
+  ENABLED: True
+DA:
+  TEACHER:
+    ENABLED: True
+  DISTILL:
+    HARD_ROIH_CLS_ENABLED: False
+    HARD_ROIH_REG_ENABLED: False
+    HARD_OBJ_ENABLED: False
+    HARD_RPN_REG_ENABLED: False
+    ROIH_CLS_ENABLED: True
+    OBJ_ENABLED: True
+    ROIH_REG_ENABLED: True
+    RPN_REG_ENABLED: True
+  ALIGN:
+    RPN_DA_ENABLED: False
+    STYLE_ENABLED: False        
+    STYLE_ALPHA: 0.3           
+    STYLE_LEVELS: ["p2", "p3"]
+    STYLE_STAT_WEIGHT: 0.01
+    STYLE_STRENGTH: 0.5
+AUG:
+  LABELED_INCLUDE_RANDOM_ERASING: True
+  UNLABELED_INCLUDE_RANDOM_ERASING: False
+  LABELED_MIC_AUG: False
+  UNLABELED_MIC_AUG: True
+DATASETS:
+  UNLABELED: ("cityscapes_foggy_train",)
+  BATCH_COMPONENTS: ("labeled_strong", "unlabeled_strong")
+  BATCH_RATIOS: (1,1)
+SOLVER:
+  STEPS: (29999,)
+  MAX_ITER: 30000
+  BACKWARD_AT_END: True
+OUTPUT_DIR: "/mnt/hdddata/hotaek/da2od-best"
