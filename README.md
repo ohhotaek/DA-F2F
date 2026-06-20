@@ -1,5 +1,7 @@
 <div align="center">
+
 # DA-F2F: Domain-Adaptive Object Detection with Feature-to-Feature Modulation and Alignment
+
 </div>
 
 <p align="center">
@@ -31,16 +33,17 @@ In this paper, we:
 
 3. Demonstrate strong performance across multiple domain shift scenarios, including weather adaptation, small-to-large scale dataset adaptation, and synthetic-to-real adaptation.
 
-## Installation
+## Requirements
+
+Install the required Python packages using `requirements.txt`.
 
 ```bash
-conda create -n daf2f python=3.9 -y
-conda activate daf2f
-
-pip install torch torchvision
-pip install -r requirements.txt
-pip install -e .
+python -m pip install -r requirements.txt
 ```
+
+We recommend using `python -m pip` instead of `pip` to ensure that packages are installed into the currently activated conda environment.
+
+Note that `torch`, `torchvision`, and `detectron2` are CUDA-dependent. If they are not already installed, please install versions compatible with your CUDA environment before running DA-F2F.
 
 ## Dataset Preparation
 
@@ -56,31 +59,21 @@ datasets/
 
 ## Training
 
-### Cityscapes → Foggy Cityscapes
+```bash
+python tools/train_net.py \
+    --config-file ${CONFIG_FILE}
+```
+
+
+For multi-GPU training, specify the visible GPUs and the number of GPUs.
 
 ```bash
 CUDA_VISIBLE_DEVICES=0,1,2,3 python tools/train_net.py \
-    --config-file configs/cityscapes/da2od-cityscapes.yaml \
+    --config-file ${CONFIG_FILE} \
     --num-gpus 4
 ```
 
-### Cityscapes → BDD100K-daytime
-
-```bash
-CUDA_VISIBLE_DEVICES=0,1,2,3 python tools/train_net.py \
-    --config-file configs/bdd100k/da2od-bdd100k.yaml \
-    --num-gpus 4
-```
-
-### Sim10K → Cityscapes
-
-```bash
-CUDA_VISIBLE_DEVICES=0,1,2,3 python tools/train_net.py \
-    --config-file configs/sim10k/da2od-sim10k.yaml \
-    --num-gpus 4
-```
-
-## Resume Training
+To resume training from a checkpoint, run the following command.
 
 ```bash
 CUDA_VISIBLE_DEVICES=0,1,2,3 python tools/train_net.py \
@@ -92,19 +85,19 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python tools/train_net.py \
 ## Evaluation
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python tools/train_net.py \
-    --config-file configs/cityscapes/da-f2f-cityscapes.yaml \
+python tools/train_net.py \
+    --config-file ${CONFIG_FILE} \
     --eval-only \
     MODEL.WEIGHTS path/to/model.pth
 ```
 
 ## Results
 
-| Adaptation Scenario           | Detector     | Backbone      |  mAP |
-| ----------------------------- | ------------ | ------------- | ---: |
-| Cityscapes → Foggy Cityscapes | Faster R-CNN | ResNet-50-FPN | 60.5 |
-| Cityscapes → BDD100K-daytime  | Faster R-CNN | ResNet-50-FPN | 46.9 |
-| Sim10K → Cityscapes           | Faster R-CNN | ResNet-50-FPN | 69.9 |
+| Adaptation Scenario           |  mAP |
+| ----------------------------- | ---: |
+| Cityscapes → Foggy Cityscapes | 60.5 |
+| Cityscapes → BDD100K-daytime  | 46.9 |
+| Sim10K → Cityscapes           | 69.9 |
 
 ## Model Zoo
 

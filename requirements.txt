@@ -1,0 +1,34 @@
+# DA-F2F requirements
+# Python 3.9 recommended
+#
+# Install:
+#   python -m pip install -r requirements.txt
+#
+# NOTE:
+# torch / torchvision / detectron2 are CUDA-dependent.
+# Install them separately according to your CUDA version if needed.
+
+numpy
+opencv-python
+Pillow
+matplotlib
+scipy
+tqdm
+pyyaml
+yacs
+termcolor
+tabulate
+cloudpickle
+tensorboard
+tensorboardX
+pycocotools
+cityscapesscripts
+fvcore
+iopath
+omegaconf
+hydra-core
+wandb
+scikit-learn
+cython
+shapely
+requests
